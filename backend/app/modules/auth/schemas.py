@@ -41,3 +41,16 @@ class UserResponse(BaseModel):
     last_login: datetime | None
     
     model_config = ConfigDict(from_attributes=True)
+    
+    
+class LoginSchema(BaseModel):
+    email: EmailStr
+    password: str
+    
+class TokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    type: str = "bearer"
+    
+class RefreshRequest(BaseModel):
+    refresh_token: str

@@ -1,1 +1,1 @@
-from app.modules.users import models as users_models
+from app.modules.auth import models as auth_models
