@@ -22,6 +22,7 @@ class User(TimestampMixin, SoftDeleteMixin, Base):
     
     
     reset_tokens: Mapped[list["PasswordResetToken"]] = relationship(back_populates="user")
+    refresh_tokens: Mapped[list["RefreshToken"]] = relationship(back_populates="user")
     
     
 class PasswordResetToken(TimestampMixin, Base):
@@ -31,11 +32,11 @@ class PasswordResetToken(TimestampMixin, Base):
     user_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     code: Mapped[str] = mapped_column(String(128), nullable=False)
     expires_at: Mapped[datetime] = mapped_column(nullable=False)
-    used_at: Mapped[datetime | None] = mapped_column(nullable=False)
+    used_at: Mapped[datetime | None] = mapped_column(nullable=True)
     
     user: Mapped["User"] = relationship(back_populates="reset_tokens")
     
-class RefreshTokens(TimestampMixin, Base):
+class RefreshToken(TimestampMixin, Base):
     __tablename__ = "refresh_tokens"
     
     id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=True)
