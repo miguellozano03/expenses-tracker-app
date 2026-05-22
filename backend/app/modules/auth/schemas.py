@@ -1,3 +1,4 @@
+from typing import Literal
 from uuid import UUID
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, field_validator, EmailStr
@@ -50,7 +51,7 @@ class LoginSchema(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     refresh_token: str
-    type: str = "bearer"
+    type: Literal["bearer"] = "bearer"
     
 class RefreshRequest(BaseModel):
     refresh_token: str

@@ -2,9 +2,35 @@ import { User, UserRoundPlus, Lock, Mail } from "lucide-react";
 import { Input } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/authStore";
+import { useState } from "react";
 
 export function Register() {
+  const { register } = useAuthStore();
+  const navigate = useNavigate();
+
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      await register({ nickname, email, password });
+      navigate("/login");
+    } catch {
+      setError("Error to create account");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <header className="md:hidden text-center mb-8">
@@ -17,7 +43,10 @@ export function Register() {
         </h2>
       </header>
 
-      <form className="flex flex-col gap-5 bg-green-50 md:bg-transparent py-12 px-6 w-full rounded-xl md:rounded-none shadow-sm md:shadow-none md:min-h-[420px] justify-center">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-5 bg-green-50 md:bg-transparent py-12 px-6 w-full rounded-xl md:rounded-none shadow-sm md:shadow-none md:min-h-[420px] justify-center"
+      >
         <h2 className="md:hidden text-lg font-semibold text-[#0a1f12]">
           Create account
         </h2>
@@ -30,6 +59,8 @@ export function Register() {
             id="nickanme"
             placeholder="Your nickanme"
             icon={<User size={20} />}
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
           />
         </div>
 
@@ -41,6 +72,8 @@ export function Register() {
             id="email"
             placeholder="your@email.com"
             icon={<Mail size={20} />}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -53,10 +86,16 @@ export function Register() {
             placeholder="Min. 8 characters"
             icon={<Lock size={20} />}
             type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <Button icon={<UserRoundPlus size={20} />}>Create account </Button>
+        {error && <p className="text-sm text-red-600 text-center">{error}</p>}
+
+        <Button icon={<UserRoundPlus size={20} />}>
+          {loading ? "Creating new account" : "Create account"}
+        </Button>
 
         <p className="text-sm text-[#0f2918] text-center mt-4">
           Have you account?{" "}
