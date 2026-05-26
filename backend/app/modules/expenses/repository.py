@@ -1,7 +1,7 @@
 from uuid import UUID
 from typing import Sequence
 
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from app.core.repository import BaseRepository
@@ -37,6 +37,38 @@ class ExpenseRepository(BaseRepository[Expense]):
 
     def create(self, data: dict) -> Expense:
         return super().create({**data, "user_id": self.user_id})
+    
+    def get_total_expenses_for_period(self, start, end):
+        stmt = (
+            select(func.coalesce(func.sum(Expense.amount), 0))
+            .where(Expense.user_id == self.user_id)
+            .where(Expense.date >= start)
+            .where(Expense.date <= end)
+            .where(Expense.is_deleted.is_(False))
+        )
+        
+        return self.session.scalar(stmt)
+    
+    def get_expenses_grouped_by_category(self, start, end):
+        stmt = (
+            select(Category.name, func.sum(Expense.amount))
+            .join(Category, Expense.category_id == Category.id)
+            .where(Expense.user_id == self.user_id)
+            .where(Expense.date >= start)
+            .where(Expense.date <= end)
+            .where(Expense.is_deleted.is_(False))
+            .group_by(Category.name)
+        )
+        return self.session.execute(stmt).all()
+    
+    def get_total_expenses(self):
+        stmt = (
+            select(func.coalesce(func.sum(Expense.amount), 0))
+            .where(Expense.user_id == self.user_id)
+            .where(Expense.is_deleted.is_(False))
+        )
+        
+        return self.session.scalar(stmt)
       
 class CategoryRepository(BaseRepository[Category]):
 

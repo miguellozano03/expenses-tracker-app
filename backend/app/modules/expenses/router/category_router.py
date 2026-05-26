@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, status
 from app.modules.auth.dependencies import get_current_user
 from ..service import CategoryService
 from ..dependencies import get_category_service
-from ..schemas import CategoryResponse, CategoryCreate, CategoryUpdate
+from ..schemas import CategoryRead, CategoryCreate, CategoryUpdate
 
 
 router = APIRouter(
@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=list[CategoryResponse])
+@router.get("/", response_model=list[CategoryRead])
 def get_all_categories(
     limit: int = 10,
     offset: int = 0,
@@ -21,14 +21,14 @@ def get_all_categories(
 ):
     return service.get_all(limit, offset)
 
-@router.post("/", response_model=CategoryResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=CategoryRead, status_code=status.HTTP_201_CREATED)
 def create_category(
     data: CategoryCreate,
     service: CategoryService = Depends(get_category_service)
 ):
     return service.create(data)
 
-@router.put("/{category_id}", response_model=CategoryResponse)
+@router.put("/{category_id}", response_model=CategoryRead)
 def update_category(
     category_id: UUID,
     data: CategoryUpdate,
