@@ -34,4 +34,9 @@ class Settings(BaseSettings):
             return [i.strip().strip('"').strip("'") for i in v.split(",")]
         return v
     
+    # rate limiter
+    register_rate_limit: str = "5/minute"
+    login_rate_limit: str = "5/minute"
+    refresh_rate_limit: str = "20/minute"
+    
 settings = Settings() # type: ignore
