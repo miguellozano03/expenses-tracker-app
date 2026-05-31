@@ -1,6 +1,6 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { navigate } from "../hooks/useNavigateRef";
-import { type TokenResponse } from "../../types/auth";
+import { type TokenResponse } from "../types/auth";
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? "https://api.tuapp.com";
 

@@ -4,7 +4,6 @@ import { Button } from "../../components/ui/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import React, { useState } from "react";
-import { p } from "framer-motion/client";
 
 export function Login() {
   const { login } = useAuthStore();
@@ -22,7 +21,7 @@ export function Login() {
     setLoading(true);
     try {
       await login({ email, password });
-      navigate("/register");
+      navigate("/home");
     } catch {
       setError("Wrong credentials, try it again");
     } finally {

@@ -18,10 +18,7 @@ def get_auth_service(session: Session = Depends(get_db)) -> AuthService:
         PasswordResetTokenRepository(session)
     )
     
-def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
-    session: Session = Depends(get_db),
-) -> User:
+def get_current_user( credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme), session: Session = Depends(get_db)) -> User:
     payload = decode_token(credentials.credentials)
 
     if payload is None or payload.get("type") != "access":

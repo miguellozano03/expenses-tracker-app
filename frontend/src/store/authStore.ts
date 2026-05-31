@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { authService } from "../service/authService";
-import type { UserRead, LoginSchema, UserCreate } from "../../types/auth";
+import type { UserRead, LoginSchema, UserCreate } from "../types/auth";
 
 interface AuthState {
   user: UserRead | null;
@@ -9,6 +9,7 @@ interface AuthState {
 
   login: (payload: LoginSchema) => Promise<void>;
   register: (payload: UserCreate) => Promise<void>;
+  profile: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -20,16 +21,30 @@ export const useAuthStore = create<AuthState>()(
 
       login: async (payload) => {
         await authService.login(payload);
-        set({ isAuthenticated: true });
+
+        const user = await authService.profile();
+        set({ user, isAuthenticated: true });
       },
 
       register: async (payload) => {
         await authService.register(payload);
       },
 
+      profile: async () => {
+        try {
+          const user = await authService.profile();
+          set({ user, isAuthenticated: true });
+        } catch {
+          set({
+            user: null,
+            isAuthenticated: false,
+          });
+        }
+      },
+
       logout: async () => {
         await authService.logout();
-        set({ isAuthenticated: false });
+        set({ user: null, isAuthenticated: false });
       },
     }),
     {

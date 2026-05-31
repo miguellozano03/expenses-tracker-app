@@ -10,38 +10,10 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useDashboard } from "../../hooks/useDashboard";
+import type { PeriodFilter } from "../../types/dashboard";
 
 type Period = "day" | "week" | "month" | "quarter" | "year";
-
-interface CategorySummary {
-  name: string;
-  total: number;
-  pct_of_total: number;
-}
-
-interface DashboardSummary {
-  total_all_time: number;
-  total_current_period: number;
-  total_previous_period: number;
-  variation_pct: number;
-  by_category: CategorySummary[];
-  top_3_categories: CategorySummary[];
-}
-
-// Mock — reemplazar con API call
-const MOCK_SUMMARY: DashboardSummary = {
-  total_all_time: 1240.0,
-  total_current_period: 248.5,
-  total_previous_period: 310.0,
-  variation_pct: -19.8,
-  by_category: [
-    { name: "Food", total: 98.5, pct_of_total: 39.6 },
-    { name: "Transport", total: 75.0, pct_of_total: 30.2 },
-    { name: "Health", total: 45.0, pct_of_total: 18.1 },
-    { name: "Entertainment", total: 30.0, pct_of_total: 12.1 },
-  ],
-  top_3_categories: [],
-};
 
 const PERIODS: { label: string; value: Period }[] = [
   { label: "Day", value: "day" },
@@ -53,16 +25,46 @@ const PERIODS: { label: string; value: Period }[] = [
 
 const COLORS = ["#000000", "#6b7280", "#9ca3af", "#d1d5db"];
 
+const fmt = (value: string | number) =>
+  Number(value).toLocaleString("es-CO", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+const fmtPct = (value: string | number) =>
+  Number(value).toLocaleString("es-CO", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+
 export function Charts() {
   const [period, setPeriod] = useState<Period>("month");
-  const summary = MOCK_SUMMARY;
+  const { summary, loading, error } = useDashboard(period as PeriodFilter);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col px-4 pt-6 pb-4 gap-6">
+        <h1 className="text-2xl font-semibold">Charts</h1>
+        <p className="text-sm text-gray-400">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error || !summary) {
+    return (
+      <div className="flex flex-col px-4 pt-6 pb-4 gap-6">
+        <h1 className="text-2xl font-semibold">Charts</h1>
+        <p className="text-sm text-red-500">{error ?? "No data available"}</p>
+      </div>
+    );
+  }
 
   const comparisonData = [
-    { label: "Previous", value: summary.total_previous_period },
-    { label: "Current", value: summary.total_current_period },
+    { label: "Previous", value: Number(summary.total_previous_period) },
+    { label: "Current", value: Number(summary.total_current_period) },
   ];
 
-  const isDown = summary.variation_pct <= 0;
+  const isDown = Number(summary.variation_pct) <= 0;
 
   return (
     <div className="flex flex-col px-4 pt-6 pb-4 gap-6">
@@ -90,7 +92,7 @@ export function Charts() {
         <div className="bg-gray-50 rounded-2xl p-4">
           <p className="text-xs text-gray-400">This {period}</p>
           <p className="text-xl font-semibold mt-1">
-            ${summary.total_current_period.toFixed(2)}
+            ${fmt(summary.total_current_period)}
           </p>
         </div>
         <div className="bg-gray-50 rounded-2xl p-4">
@@ -101,7 +103,7 @@ export function Charts() {
             }`}
           >
             {isDown ? "" : "+"}
-            {summary.variation_pct.toFixed(1)}%
+            {fmtPct(summary.variation_pct)}%
           </p>
         </div>
       </div>
@@ -121,7 +123,7 @@ export function Charts() {
             />
             <YAxis hide />
             <Tooltip
-              formatter={(v: number) => [`$${v.toFixed(2)}`, ""]}
+              formatter={(v: number | string | undefined) => [`$${fmt(v ?? 0)}`, ""]}
               contentStyle={{
                 borderRadius: 12,
                 border: "1px solid #f3f4f6",
@@ -144,7 +146,10 @@ export function Charts() {
           <ResponsiveContainer width={140} height={140}>
             <PieChart>
               <Pie
-                data={summary.by_category}
+                data={summary.by_category.map((cat) => ({
+                  ...cat,
+                  total: Number(cat.total),
+                }))}
                 dataKey="total"
                 nameKey="name"
                 cx="50%"
@@ -172,7 +177,7 @@ export function Charts() {
                   <span className="text-xs text-gray-600">{cat.name}</span>
                 </div>
                 <span className="text-xs font-medium">
-                  {cat.pct_of_total.toFixed(1)}%
+                  {fmtPct(cat.pct_of_total)}%
                 </span>
               </div>
             ))}
@@ -183,9 +188,7 @@ export function Charts() {
       {/* All time total */}
       <div className="border border-gray-100 rounded-2xl p-4 flex justify-between items-center">
         <p className="text-sm text-gray-500">All time</p>
-        <p className="text-lg font-semibold">
-          ${summary.total_all_time.toFixed(2)}
-        </p>
+        <p className="text-lg font-semibold">${fmt(summary.total_all_time)}</p>
       </div>
     </div>
   );

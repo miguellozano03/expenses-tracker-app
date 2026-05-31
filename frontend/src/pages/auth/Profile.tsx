@@ -1,12 +1,6 @@
 import { LogOut, Mail, User as UserIcon, Clock } from "lucide-react";
-
-// Mock — reemplazar con tu authStore
-const MOCK_USER = {
-  nickname: "Carlos",
-  email: "carlos@example.com",
-  is_active: true,
-  last_login: "2025-05-28T10:32:00",
-};
+import { useAuthStore } from "../../store/authStore";
+import { useNavigate } from "react-router-dom";
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", {
@@ -18,10 +12,16 @@ const formatDate = (iso: string) =>
   });
 
 export function Profile() {
-  const handleLogout = () => {
-    // TODO: limpiar store y token
-    console.log("logout");
+  const navigate = useNavigate();
+  const {user, logout } = useAuthStore();
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
+
+  if (!user) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="flex flex-col px-4 pt-6 pb-4 gap-6">
@@ -30,9 +30,9 @@ export function Profile() {
       {/* Avatar + name */}
       <div className="flex flex-col items-center gap-2 py-4">
         <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center text-2xl font-semibold">
-          {MOCK_USER.nickname.charAt(0).toUpperCase()}
+          {user.nickname.charAt(0).toUpperCase()}
         </div>
-        <p className="text-lg font-semibold">{MOCK_USER.nickname}</p>
+        <p className="text-lg font-semibold">{user.nickname}</p>
         <span className="text-xs bg-green-100 text-green-700 px-3 py-0.5 rounded-full">
           Active
         </span>
@@ -44,7 +44,7 @@ export function Profile() {
           <Mail size={18} className="text-gray-400" />
           <div>
             <p className="text-xs text-gray-400">Email</p>
-            <p className="text-sm font-medium">{MOCK_USER.email}</p>
+            <p className="text-sm font-medium">{user.email}</p>
           </div>
         </div>
 
@@ -52,7 +52,7 @@ export function Profile() {
           <UserIcon size={18} className="text-gray-400" />
           <div>
             <p className="text-xs text-gray-400">Nickname</p>
-            <p className="text-sm font-medium">{MOCK_USER.nickname}</p>
+            <p className="text-sm font-medium">{user.nickname}</p>
           </div>
         </div>
 
@@ -61,7 +61,7 @@ export function Profile() {
           <div>
             <p className="text-xs text-gray-400">Last login</p>
             <p className="text-sm font-medium">
-              {MOCK_USER.last_login ? formatDate(MOCK_USER.last_login) : "—"}
+              {user.last_login ? formatDate(user.last_login) : "—"}
             </p>
           </div>
         </div>

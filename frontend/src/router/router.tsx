@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
 import { RootLayout } from "../layouts/RootLayout";
 import { AuthLayout } from "../layouts/AuthLayout";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 import { Login } from "../pages/auth/Login";
 import { Register } from "../pages/auth/Register";
-import { MobileLayout } from "../layouts/MobileLayout";
+import { AppLayout } from "../layouts/AppLayout";
 import { ListExpenses } from "../pages/expenses/List";
 import { CreateExpense } from "../pages/expenses/Create";
 import { Profile } from "../pages/auth/Profile";
@@ -29,13 +30,18 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        element: <MobileLayout />,
+        element: <ProtectedRoute />,
         children: [
-          { path: "/home", element: <DashboardHome /> },
-          { path: "/charts", element: <Charts /> },
-          { path: "/create", element: <CreateExpense /> },
-          { path: "/reports", element: <ListExpenses /> },
-          { path: "/profile", element: <Profile /> },
+          {
+            element: <AppLayout />,
+            children: [
+              { path: "/home", element: <DashboardHome /> },
+              { path: "/charts", element: <Charts /> },
+              { path: "/create", element: <CreateExpense /> },
+              { path: "/expenses", element: <ListExpenses /> },
+              { path: "/profile", element: <Profile /> },
+            ],
+          },
         ],
       },
     ],

@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, Response, Request, status
 from app.core.config import settings
 from app.core.limiter import limiter
 from .service import AuthService
-from .dependencies import get_auth_service
+from .models import User
+from .dependencies import get_auth_service, get_current_user
 from .schemas import (
     UserCreate,
     UserResponse,
@@ -23,7 +24,7 @@ def login(request: Request, data: LoginSchema, service: AuthService = Depends(ge
     return service.login(data)
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
-def logout(request: Request, data: RefreshRequest, service: AuthService = Depends(get_auth_service)):
+def logout(data: RefreshRequest, service: AuthService = Depends(get_auth_service)):
     service.logout(data.refresh_token)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
@@ -31,3 +32,7 @@ def logout(request: Request, data: RefreshRequest, service: AuthService = Depend
 @limiter.limit(settings.refresh_rate_limit)
 def refresh(request: Request, data: RefreshRequest, service: AuthService = Depends(get_auth_service)):
     return service.refresh(data.refresh_token)
+
+@router.get("/me", response_model=UserResponse)
+def profile(current_user: User = Depends(get_current_user), service: AuthService = Depends(get_auth_service)):
+    return service.profile(current_user)
