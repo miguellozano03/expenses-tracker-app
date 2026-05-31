@@ -5,6 +5,7 @@ import { type ExpenseRead } from "../types/expenses";
 const LIMIT = 10;
 
 export const useExpenses = () => {
+  const [trigger, setTrigger] = useState(0);
   const [expenses, setExpenses] = useState<ExpenseRead[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ export const useExpenses = () => {
     };
 
     loadExpenses();
-  }, [offset]);
+  }, [offset, trigger]);
 
   return {
     expenses,
@@ -35,5 +36,6 @@ export const useExpenses = () => {
     error,
     nexPage: () => setOffset((prev) => prev + LIMIT),
     previousPage: () => setOffset((prev) => Math.max(0, prev - LIMIT)),
+    refetch: () => setTrigger((t) => t + 1),
   };
 };
