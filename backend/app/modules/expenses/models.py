@@ -4,7 +4,7 @@ from decimal import Decimal
 from datetime import date as date_type
 
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
-from sqlalchemy import String, Numeric, Text, ForeignKey
+from sqlalchemy import String, Numeric, Text, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.core.mixin import SoftDeleteMixin, TimestampMixin
 from app.core.database import Base
@@ -16,11 +16,15 @@ if TYPE_CHECKING:
 class Category(TimestampMixin, SoftDeleteMixin, Base):
     __tablename__ = "categories"
     id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
-    name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
     user_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     
     user: Mapped["User"] = relationship(back_populates="categories")
     expenses: Mapped[list["Expense"]] = relationship(back_populates="category")
+    
+    __table_args__ = (
+        UniqueConstraint("name", "user_id", name="uq_category_name_user"),
+    )
     
 
 class Expense(TimestampMixin, SoftDeleteMixin, Base):
