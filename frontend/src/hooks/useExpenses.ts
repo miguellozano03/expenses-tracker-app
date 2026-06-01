@@ -20,7 +20,7 @@ export const useExpenses = () => {
         const data = await expenseService.getAll();
 
         setExpenses(data);
-      } catch (error) {
+      } catch {
         setError("The data couldn't be loaded");
       } finally {
         setLoading(false);

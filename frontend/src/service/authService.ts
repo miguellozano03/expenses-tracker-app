@@ -1,4 +1,3 @@
-import { Info } from "lucide-react";
 import api, { setTokens, clearTokens } from "../api/axiosInstance";
 import type {
   LoginSchema,

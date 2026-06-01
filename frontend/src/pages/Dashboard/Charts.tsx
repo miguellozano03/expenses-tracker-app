@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import type { ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { useDashboard } from "../../hooks/useDashboard";
 import type { PeriodFilter } from "../../types/dashboard";
 
@@ -123,7 +124,13 @@ export function Charts() {
             />
             <YAxis hide />
             <Tooltip
-              formatter={(v: number | string | undefined) => [`$${fmt(v ?? 0)}`, ""]}
+              formatter={(value: ValueType | undefined) => {
+                const amount = Array.isArray(value)
+                  ? Number(value[0] ?? 0)
+                  : Number(value ?? 0);
+
+                return [`$${fmt(amount)}`, ""];
+              }}
               contentStyle={{
                 borderRadius: 12,
                 border: "1px solid #f3f4f6",
