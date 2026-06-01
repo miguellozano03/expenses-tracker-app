@@ -1,0 +1,36 @@
+import { Info } from "lucide-react";
+import api, { setTokens, clearTokens } from "../api/axiosInstance";
+import type {
+  LoginSchema,
+  UserCreate,
+  UserRead,
+  TokenResponse,
+} from "../types/auth";
+
+export const authService = {
+  async login(payload: LoginSchema): Promise<TokenResponse> {
+    const { data } = await api.post<TokenResponse>("/auth/login", payload);
+    setTokens(data.access_token, data.refresh_token);
+    return data;
+  },
+
+  async register(payload: UserCreate): Promise<UserRead> {
+    const { data } = await api.post<UserRead>("/auth/register", payload);
+    return data;
+  },
+
+  async logout(): Promise<void> {
+    const refresh_token = localStorage.getItem("refreshToken");
+
+    try {
+      await api.post("/auth/logout", { refresh_token: refresh_token });
+    } finally {
+      clearTokens();
+    }
+  },
+
+  async profile(): Promise<UserRead> {
+    const { data } = await api.get<UserRead>("/auth/me");
+    return data;
+  },
+};
