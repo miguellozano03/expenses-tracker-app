@@ -32,6 +32,4 @@ Stop:
 ```bash
 ./stop.sh
 ```
-🧠 One-liner (IMPORTANTE para arriba del README)
 
-Spendly is a full-stack expense tracker that helps users understand where their money goes through clean dashboards and simple tracking.
