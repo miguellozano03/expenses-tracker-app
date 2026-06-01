@@ -12,11 +12,6 @@ venv/
 env/
 .env
 
-# Docker
-*.env
-docker-compose.override.yml
-**/Dockerfile*
-
 # VSCode / IDE
 .vscode/
 .idea/
