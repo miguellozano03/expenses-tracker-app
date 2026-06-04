@@ -16,17 +16,16 @@ export const Button = ({
       className={`
         flex items-center justify-center gap-2
         w-full
-        bg-linear-to-r
-        from-green-400
-        via-green-600
-        to-green-700
+        bg-spendly-800
+        text-white
+        hover:bg-spendly-900
+        dark:bg-spendly-600
+        dark:hover:bg-spendly-700
         hover:brightness-110
         hover:scale-[1.02]
-        transition
-        duration-300
+        transition transition-colors duration-200
         py-2
         rounded-xl
-        text-white
         font-semibold
         mt-6
         cursor-pointer

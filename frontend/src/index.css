@@ -1,1 +1,31 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ── Paleta Spendly ── */
+  --color-spendly-50: #f0fdf4;
+  --color-spendly-100: #dcfce7;
+  --color-spendly-200: #bbf7d0;
+  --color-spendly-300: #86efac;
+  --color-spendly-400: #4ade80;
+  --color-spendly-500: #22c55e;
+  --color-spendly-600: #16a34a;
+  --color-spendly-700: #15803d;
+  --color-spendly-800: #166534;
+  --color-spendly-900: #14532d;
+  --color-spendly-950: #0a2e1a;
+
+  /* ── Tokens modo oscuro ── */
+  --color-dark-bg: #0a1f12;
+  --color-dark-surface: #0f2918;
+  --color-dark-card: #162d1e;
+  --color-dark-border: #1e4030;
+  --color-dark-text: #d1fae5;
+  --color-dark-muted: #6ee7b7;
+}
+
+@layer base {
+  body {
+    @apply bg-spendly-50 text-spendly-900 transition-colors duration-200;
+  }
+}

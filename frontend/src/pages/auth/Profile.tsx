@@ -24,43 +24,43 @@ export function Profile() {
   }
 
   return (
-    <div className="flex flex-col px-4 pt-6 pb-4 gap-6">
-      <h1 className="text-2xl font-semibold">Profile</h1>
+    <div className="flex flex-col px-4 pt-6 pb-4 gap-6 transition-colors duration-200">
+      <h1 className="text-2xl font-semibold text-spendly-900 dark:text-dark-text">Profile</h1>
 
       {/* Avatar + name */}
       <div className="flex flex-col items-center gap-2 py-4">
-        <div className="w-16 h-16 rounded-full bg-black text-white flex items-center justify-center text-2xl font-semibold">
+        <div className="w-16 h-16 rounded-full bg-spendly-800 dark:bg-spendly-600 text-white flex items-center justify-center text-2xl font-semibold">
           {user.nickname.charAt(0).toUpperCase()}
         </div>
-        <p className="text-lg font-semibold">{user.nickname}</p>
-        <span className="text-xs bg-green-100 text-green-700 px-3 py-0.5 rounded-full">
+        <p className="text-lg font-semibold text-spendly-900 dark:text-dark-text">{user.nickname}</p>
+        <span className="text-xs bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 px-3 py-0.5 rounded-full">
           Active
         </span>
       </div>
 
       {/* Info */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-3 p-4 border border-gray-100 rounded-2xl">
-          <Mail size={18} className="text-gray-400" />
+        <div className="flex items-center gap-3 p-4 border border-spendly-100 dark:border-dark-border rounded-2xl bg-white dark:bg-dark-card transition-colors duration-200">
+          <Mail size={18} className="text-spendly-600 dark:text-dark-muted" />
           <div>
-            <p className="text-xs text-gray-400">Email</p>
-            <p className="text-sm font-medium">{user.email}</p>
+            <p className="text-xs text-spendly-700 dark:text-dark-muted">Email</p>
+            <p className="text-sm font-medium text-spendly-900 dark:text-dark-text">{user.email}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 border border-gray-100 rounded-2xl">
-          <UserIcon size={18} className="text-gray-400" />
+        <div className="flex items-center gap-3 p-4 border border-spendly-100 dark:border-dark-border rounded-2xl bg-white dark:bg-dark-card transition-colors duration-200">
+          <UserIcon size={18} className="text-spendly-600 dark:text-dark-muted" />
           <div>
-            <p className="text-xs text-gray-400">Nickname</p>
-            <p className="text-sm font-medium">{user.nickname}</p>
+            <p className="text-xs text-spendly-700 dark:text-dark-muted">Nickname</p>
+            <p className="text-sm font-medium text-spendly-900 dark:text-dark-text">{user.nickname}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 border border-gray-100 rounded-2xl">
-          <Clock size={18} className="text-gray-400" />
+        <div className="flex items-center gap-3 p-4 border border-spendly-100 dark:border-dark-border rounded-2xl bg-white dark:bg-dark-card transition-colors duration-200">
+          <Clock size={18} className="text-spendly-600 dark:text-dark-muted" />
           <div>
-            <p className="text-xs text-gray-400">Last login</p>
-            <p className="text-sm font-medium">
+            <p className="text-xs text-spendly-700 dark:text-dark-muted">Last login</p>
+            <p className="text-sm font-medium text-spendly-900 dark:text-dark-text">
               {user.last_login ? formatDate(user.last_login) : "—"}
             </p>
           </div>
@@ -70,7 +70,7 @@ export function Profile() {
       {/* Logout */}
       <button
         onClick={handleLogout}
-        className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-red-200 text-red-500 text-sm font-medium hover:bg-red-50 active:scale-95 transition-all mt-auto"
+        className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-red-200 dark:border-red-500/30 text-red-500 dark:text-red-400 text-sm font-medium hover:bg-red-50 dark:hover:bg-red-500/10 active:scale-95 transition-all mt-auto"
       >
         <LogOut size={16} />
         Log out

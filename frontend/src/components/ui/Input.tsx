@@ -17,21 +17,21 @@ export const Input = ({ type, icon, error, ...props }: InputProps) => {
   return (
     <>
       <div
-        className={`flex items-center w-full border gap-3 p-1 rounded-md ${error ? "border-red-400" : "border-gray-300"}`}
+        className={`flex items-center w-full border gap-3 p-1 rounded-md transition-colors duration-200 ${error ? "border-red-400" : "border-spendly-200 dark:border-dark-border"}`}
       >
         {icon}
-        <input {...props} type={inputType} className="w-full outline-none" />
+        <input {...props} type={inputType} className="w-full outline-none bg-white dark:bg-dark-card text-spendly-900 dark:text-dark-text placeholder:text-spendly-300 dark:placeholder:text-dark-border focus:border-spendly-600 dark:focus:border-dark-border" />
         {isPassword &&
           (isVisible ? (
             <Eye
               size={20}
-              className="cursor-pointer"
+              className="cursor-pointer text-spendly-600 dark:text-dark-muted"
               onClick={() => setIsVisible(false)}
             />
           ) : (
             <EyeOff
               size={20}
-              className="cursor-pointer"
+              className="cursor-pointer text-spendly-600 dark:text-dark-muted"
               onClick={() => setIsVisible(true)}
             />
           ))}
