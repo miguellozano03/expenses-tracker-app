@@ -5,18 +5,14 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.security.jwt import decode_token
-from .repository import UserRepository, RefreshTokenRepository, PasswordResetTokenRepository
+from .repository import UserRepository, RefreshTokenRepository
 from .service import AuthService
 from .models import User
 
 bearer_scheme = HTTPBearer()
 
 def get_auth_service(session: Session = Depends(get_db)) -> AuthService:
-    return AuthService(
-        UserRepository(session),
-        RefreshTokenRepository(session),
-        PasswordResetTokenRepository(session)
-    )
+    return AuthService(UserRepository(session), RefreshTokenRepository(session))
     
 def get_current_user( credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme), session: Session = Depends(get_db)) -> User:
     payload = decode_token(credentials.credentials)
