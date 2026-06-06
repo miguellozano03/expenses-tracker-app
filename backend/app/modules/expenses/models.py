@@ -4,7 +4,7 @@ from decimal import Decimal
 from datetime import date as date_type
 
 from sqlalchemy.dialects.postgresql import UUID as PGUUID
-from sqlalchemy import String, Numeric, Text, ForeignKey, UniqueConstraint
+from sqlalchemy import String, Numeric, Text, ForeignKey, UniqueConstraint, Index, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.core.mixin import SoftDeleteMixin, TimestampMixin
 from app.core.database import Base
@@ -24,6 +24,7 @@ class Category(TimestampMixin, SoftDeleteMixin, Base):
     
     __table_args__ = (
         UniqueConstraint("name", "user_id", name="uq_category_name_user"),
+        Index("idx_categories_user_id", "user_id")
     )
     
 
@@ -31,10 +32,21 @@ class Expense(TimestampMixin, SoftDeleteMixin, Base):
     __tablename__ = "expenses"
     id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), primary_key=True, default=uuid4, unique=True, nullable=False)
     amount: Mapped[Decimal] = mapped_column(Numeric(10,2), nullable=False)
-    date: Mapped[date_type] = mapped_column(nullable=True)
+    date: Mapped[date_type | None] = mapped_column(nullable=True)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     user_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     category_id: Mapped[UUID] = mapped_column(PGUUID(as_uuid=True), ForeignKey("categories.id", ondelete="SET NULL"), nullable=True)
     
     user: Mapped["User"] = relationship(back_populates="expenses")
     category: Mapped["Category | None"] = relationship(back_populates="expenses")
+    
+    __table_args__ = (
+        Index("idx_expenses_user_date", "user_id", "date"),
+        Index("idx_expenses_category_id", "category_id"),
+        Index(
+                "idx_expenses_user_date_active",
+                "user_id",
+                "date",
+                postgresql_where=Column("is_deleted").is_(False),
+            ),
+    )
