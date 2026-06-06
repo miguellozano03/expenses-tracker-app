@@ -1,10 +1,10 @@
-import api, { setTokens, clearTokens } from "../api/axiosInstance";
+import api, { setTokens, clearTokens } from "@/api/axiosInstance";
 import type {
   LoginSchema,
   UserCreate,
   UserRead,
   TokenResponse,
-} from "../types/auth";
+} from "@/types/auth";
 
 export const authService = {
   async login(payload: LoginSchema): Promise<TokenResponse> {

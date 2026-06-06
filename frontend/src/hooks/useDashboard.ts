@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { dashboardService } from "../service/dashboardService";
-import type { DashboardSummary, PeriodFilter } from "../types/dashboard";
+import { dashboardService } from "@/service/dashboardService";
+import type { DashboardSummary, PeriodFilter } from "@/types/dashboard";
 
 export const useDashboard = (period?: PeriodFilter) => {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);

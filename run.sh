@@ -6,7 +6,6 @@ docker compose up -d
 echo "Starting up frontend..."
 
 cd frontend
-pnpm run dev &
-echo $! > .frontend.pid
+pnpm run dev
 
 wait

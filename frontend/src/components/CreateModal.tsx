@@ -25,24 +25,24 @@ export function CreateModal({ open, onClose }: CreateModalProps) {
 
       {/* Sheet */}
       <div
-        className="relative z-10 bg-white w-full max-w-lg rounded-t-3xl md:rounded-2xl
-          shadow-xl max-h-[90vh] overflow-y-auto"
+        className="relative z-10 bg-white dark:bg-dark-card w-full max-w-lg rounded-t-3xl md:rounded-2xl
+          shadow-xl max-h-[90vh] overflow-y-auto transition-colors duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Handle */}
         <div className="flex justify-center pt-3 pb-1 md:hidden">
-          <div className="w-10 h-1 rounded-full bg-gray-200" />
+          <div className="w-10 h-1 rounded-full bg-spendly-200 dark:bg-dark-border" />
         </div>
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-4 pb-2">
-          <div className="flex gap-1 bg-gray-100 rounded-xl p-1">
+          <div className="flex gap-1 bg-spendly-50 dark:bg-dark-surface rounded-xl p-1">
             <button
               onClick={() => setTab("expense")}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 tab === "expense"
-                  ? "bg-white shadow-sm text-black"
-                  : "text-gray-500"
+                  ? "bg-white dark:bg-dark-card shadow-sm text-spendly-900 dark:text-dark-text"
+                  : "text-spendly-700 dark:text-dark-muted"
               }`}
             >
               Expense
@@ -51,8 +51,8 @@ export function CreateModal({ open, onClose }: CreateModalProps) {
               onClick={() => setTab("category")}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 tab === "category"
-                  ? "bg-white shadow-sm text-black"
-                  : "text-gray-500"
+                  ? "bg-white dark:bg-dark-card shadow-sm text-spendly-900 dark:text-dark-text"
+                  : "text-spendly-700 dark:text-dark-muted"
               }`}
             >
               Category
@@ -60,7 +60,7 @@ export function CreateModal({ open, onClose }: CreateModalProps) {
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-black transition-colors"
+            className="text-spendly-600 dark:text-dark-muted hover:text-spendly-900 dark:hover:text-dark-text transition-colors"
           >
             <X size={20} />
           </button>
