@@ -1,10 +1,10 @@
-import { User, UserRoundPlus, Lock, Mail } from "lucide-react";
-import { Input } from "../../components/ui/Input";
-import { Button } from "../../components/ui/Button";
+import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/authStore";
-import { useState } from "react";
+import { User, UserRoundPlus, Lock, Mail } from "lucide-react";
+
+import { Input, Button } from "@/components/ui";
+import { useAuthStore } from "@/store/authStore";
 
 export function Register() {
   const { register } = useAuthStore();

@@ -1,9 +1,9 @@
-import api from "../api/axiosInstance";
+import api from "@/api/axiosInstance";
 import type {
   CategoryCreate,
   CategoryRead,
   CategoryUpdate,
-} from "../types/expenses";
+} from "@/types/expenses";
 
 export const categoryService = {
   async create(payload: CategoryCreate): Promise<CategoryRead> {

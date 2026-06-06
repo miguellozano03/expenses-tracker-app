@@ -1,9 +1,10 @@
-import { Lock, Mail, SquareArrowLeft } from "lucide-react";
-import { Input } from "../../components/ui/Input";
-import { Button } from "../../components/ui/Button";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../store/authStore";
 import React, { useState } from "react";
+
+import { Link, useNavigate } from "react-router-dom";
+import { Lock, Mail, SquareArrowLeft } from "lucide-react";
+
+import { Input, Button } from "@/components/ui";
+import { useAuthStore } from "@/store/authStore";
 
 export function Login() {
   const { login } = useAuthStore();

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { SideBar } from "../components/Sidebar";
-import { CreateModal } from "../components/CreateModal";
-import { useTheme } from "../hooks/useTheme";
+import { SideBar } from "@/components/Sidebar";
+import { CreateModal } from "@/components/CreateModal";
+import { useTheme } from "@/hooks/useTheme";
 
 export function AppLayout() {
   const [modalOpen, setModalOpen] = useState(false);

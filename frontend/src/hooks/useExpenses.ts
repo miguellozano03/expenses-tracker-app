@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { expenseService } from "../service/expenseService";
-import { type ExpenseRead } from "../types/expenses";
+import { expenseService } from "@/service/expenseService";
+import { type ExpenseRead } from "@/types/expenses";
 
 const LIMIT = 10;
 

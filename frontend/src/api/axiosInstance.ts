@@ -1,8 +1,8 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
-import { navigate } from "../hooks/useNavigateRef";
-import { type TokenResponse } from "../types/auth";
+import { navigate } from "@/hooks/useNavigateRef";
+import { type TokenResponse } from "@/types/auth";
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? "https://api.tuapp.com";
+const BASE_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5173";
 
 const api = axios.create({
   baseURL: BASE_URL,

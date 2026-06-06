@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, DollarSign, Calendar, Tag, FileText } from "lucide-react";
 
-import { useCategories } from "../../hooks/useCategories";
-import { expenseService } from "../../service/expenseService";
+import { useCategories } from "@/hooks/useCategories";
+import { expenseService } from "@/service/expenseService";
 
 export function CreateExpense() {
   const navigate = useNavigate();
@@ -51,7 +51,9 @@ export function CreateExpense() {
         Back
       </button>
 
-      <h1 className="text-2xl font-semibold mb-6 text-spendly-900 dark:text-dark-text">New expense</h1>
+      <h1 className="text-2xl font-semibold mb-6 text-spendly-900 dark:text-dark-text">
+        New expense
+      </h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="flex flex-col gap-1">

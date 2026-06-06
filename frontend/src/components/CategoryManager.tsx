@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pencil, Trash2, Check, X, Plus } from "lucide-react";
-import { useCategories } from "../hooks/useCategories";
+import { useCategories } from "@/hooks/useCategories";
 
 export function CategoryManager() {
   const {
@@ -38,7 +38,12 @@ export function CategoryManager() {
     setDeletingId(null);
   };
 
-  if (loading) return <p className="text-sm text-spendly-700 dark:text-dark-muted py-4">Loading...</p>;
+  if (loading)
+    return (
+      <p className="text-sm text-spendly-700 dark:text-dark-muted py-4">
+        Loading...
+      </p>
+    );
 
   return (
     <div className="flex flex-col gap-4 pt-2 transition-colors duration-200">
@@ -84,7 +89,9 @@ export function CategoryManager() {
                 Delete "{cat.name}"?
               </span>
             ) : (
-              <span className="text-sm font-medium flex-1 text-spendly-900 dark:text-dark-text">{cat.name}</span>
+              <span className="text-sm font-medium flex-1 text-spendly-900 dark:text-dark-text">
+                {cat.name}
+              </span>
             )}
 
             <div className="flex items-center gap-1 shrink-0">

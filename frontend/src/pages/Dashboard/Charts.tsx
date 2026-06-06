@@ -11,9 +11,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { ChartPie } from "lucide-react";
-import { useDashboard } from "../../hooks/useDashboard";
-import type { PeriodFilter } from "../../types/dashboard";
-import type { ValueType } from "recharts/types/component/DefaultTooltipContent";
+import { useDashboard } from "@/hooks";
+import type { PeriodFilter } from "@/types/dashboard";
 
 type Period = "day" | "week" | "month" | "quarter" | "year";
 

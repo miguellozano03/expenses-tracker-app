@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
-import { useExpenses } from "../../hooks/useExpenses";
-import { expenseService } from "../../service/expenseService";
-import { ExpenseForm } from "../../components/ExpenseForm";
-import type { ExpenseRead } from "../../types/expenses";
+import { useExpenses } from "@/hooks/useExpenses";
+import { expenseService } from "@/service/expenseService";
+import { ExpenseForm } from "@/components/ExpenseForm";
+import type { ExpenseRead } from "@/types/expenses";
 
 const fmt = (value: string | number) =>
   Number(value).toLocaleString("es-CO", {
@@ -27,16 +27,25 @@ export function ListExpenses() {
     refetch();
   };
 
-  if (loading) return <p className="p-4 text-spendly-900 dark:text-dark-text">Loading...</p>;
+  if (loading)
+    return (
+      <p className="p-4 text-spendly-900 dark:text-dark-text">Loading...</p>
+    );
   if (error) return <p className="p-4 text-red-500">{error}</p>;
 
   return (
     <div className="flex flex-col px-4 pt-4 pb-6 gap-6 transition-colors duration-200">
-      <h1 className="text-2xl font-semibold text-spendly-900 dark:text-dark-text">Expenses</h1>
+      <h1 className="text-2xl font-semibold text-spendly-900 dark:text-dark-text">
+        Expenses
+      </h1>
 
       <div className="bg-spendly-50 dark:bg-dark-card rounded-2xl p-4 transition-colors duration-200">
-        <p className="text-sm text-spendly-700 dark:text-dark-muted">Total expenses</p>
-        <p className="text-3xl font-semibold mt-1 text-spendly-900 dark:text-dark-text">${fmt(total)}</p>
+        <p className="text-sm text-spendly-700 dark:text-dark-muted">
+          Total expenses
+        </p>
+        <p className="text-3xl font-semibold mt-1 text-spendly-900 dark:text-dark-text">
+          ${fmt(total)}
+        </p>
       </div>
 
       <div className="flex flex-col gap-3">
@@ -138,7 +147,9 @@ export function ListExpenses() {
               <div className="w-10 h-1 rounded-full bg-spendly-200 dark:bg-dark-border" />
             </div>
             <div className="flex items-center justify-between px-5 pt-4 pb-2">
-              <h2 className="font-semibold text-spendly-900 dark:text-dark-text">Edit expense</h2>
+              <h2 className="font-semibold text-spendly-900 dark:text-dark-text">
+                Edit expense
+              </h2>
               <button
                 onClick={() => setEditingExpense(null)}
                 className="text-spendly-600 dark:text-dark-muted hover:text-spendly-900 dark:hover:text-dark-text transition-colors"

@@ -1,9 +1,9 @@
-import api from "../api/axiosInstance";
+import api from "@/api/axiosInstance";
 import type {
   ExpenseCreate,
   ExpenseRead,
   ExpenseUpdate,
-} from "../types/expenses";
+} from "@/types/expenses";
 
 export const expenseService = {
   async create(payload: ExpenseCreate): Promise<ExpenseRead> {

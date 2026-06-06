@@ -1,9 +1,9 @@
-import api from "../api/axiosInstance";
+import api from "@/api/axiosInstance";
 import type {
   DashboardSummary,
   TotalExpenses,
   PeriodFilter,
-} from "../types/dashboard";
+} from "@/types/dashboard";
 
 export const dashboardService = {
   async getTotal(): Promise<TotalExpenses> {

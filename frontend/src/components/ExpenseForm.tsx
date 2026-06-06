@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DollarSign, Calendar, Tag, FileText } from "lucide-react";
-import { useCategories } from "../hooks/useCategories";
-import { expenseService } from "../service/expenseService";
+import { useCategories } from "@/hooks/useCategories";
+import { expenseService } from "@/service/expenseService";
 
 interface ExpenseFormProps {
   onSuccess: () => void;
