@@ -51,8 +51,11 @@ class ExpenseRepository(BaseRepository[Expense]):
     
     def get_expenses_grouped_by_category(self, start, end):
         stmt = (
-            select(Category.name, func.sum(Expense.amount))
-            .join(Category, Expense.category_id == Category.id)
+            select(
+                func.coalesce(Category.name, "No category"),
+                func.sum(Expense.amount)
+            )
+            .outerjoin(Category, Expense.category_id == Category.id)
             .where(Expense.user_id == self.user_id)
             .where(Expense.date >= start)
             .where(Expense.date <= end)
