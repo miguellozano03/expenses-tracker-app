@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
-
-import { LogOut, Mail, User as UserIcon, Clock } from "lucide-react";
+import { LogOut, Mail, UserIcon, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
 
 import { useAuthStore } from "@/store/authStore";
+import type { UserRead } from "@/types/auth";
+import { EditableField } from "@/components/EditableField";
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString("en-US", {
@@ -15,10 +17,41 @@ const formatDate = (iso: string) =>
 
 export function Profile() {
   const navigate = useNavigate();
-  const { user, logout } = useAuthStore();
+  const { user: authUser, logout, updateUser } = useAuthStore();
+
+  // State for the user profile data
+  const [user, setUser] = useState<UserRead | null>(null);
+
+  // Effect to set the initial user state when authUser changes
+  useEffect(() => {
+    if (authUser) {
+      setUser({
+        email: authUser.email,
+        nickname: authUser.nickname,
+        is_active: authUser.is_active,
+        last_login: authUser.last_login,
+      });
+    }
+  }, [authUser]);
+
   const handleLogout = async () => {
     await logout();
     navigate("/login");
+  };
+
+  // Handler to update user state and persist changes
+  const handleUserUpdate = async (field: keyof UserRead, newValue: string) => {
+    if (!user) return;
+
+    const updatedUser = { ...user, [field]: newValue };
+    setUser(updatedUser); // Optimistic update
+
+    try {
+      await updateUser(updatedUser);
+    } catch (error) {
+      console.error("Failed to update user profile:", error);
+      // Aquí podrías revertir el estado si falla la API, pero lo dejamos como lo tenías
+    }
   };
 
   if (!user) {
@@ -46,32 +79,19 @@ export function Profile() {
 
       {/* Info */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-3 p-4 border border-spendly-100 dark:border-dark-border rounded-2xl bg-white dark:bg-dark-card transition-colors duration-200">
-          <Mail size={18} className="text-spendly-600 dark:text-dark-muted" />
-          <div>
-            <p className="text-xs text-spendly-700 dark:text-dark-muted">
-              Email
-            </p>
-            <p className="text-sm font-medium text-spendly-900 dark:text-dark-text">
-              {user.email}
-            </p>
-          </div>
-        </div>
+        <EditableField
+          icon={Mail}
+          label="Email"
+          value={user.email}
+          onSave={(newValue) => handleUserUpdate("email", newValue)}
+        />
 
-        <div className="flex items-center gap-3 p-4 border border-spendly-100 dark:border-dark-border rounded-2xl bg-white dark:bg-dark-card transition-colors duration-200">
-          <UserIcon
-            size={18}
-            className="text-spendly-600 dark:text-dark-muted"
-          />
-          <div>
-            <p className="text-xs text-spendly-700 dark:text-dark-muted">
-              Nickname
-            </p>
-            <p className="text-sm font-medium text-spendly-900 dark:text-dark-text">
-              {user.nickname}
-            </p>
-          </div>
-        </div>
+        <EditableField
+          icon={UserIcon}
+          label="Nickname"
+          value={user.nickname}
+          onSave={(newValue) => handleUserUpdate("nickname", newValue)}
+        />
 
         <div className="flex items-center gap-3 p-4 border border-spendly-100 dark:border-dark-border rounded-2xl bg-white dark:bg-dark-card transition-colors duration-200">
           <Clock size={18} className="text-spendly-600 dark:text-dark-muted" />
